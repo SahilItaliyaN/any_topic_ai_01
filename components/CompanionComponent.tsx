@@ -19,6 +19,7 @@ const CompanionComponent = ({ companionId, subject, topic, name, userName, userI
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE)
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
+  const [messages,setMessages] = useState<SavedMessage[]>([])
 
   const lottieRef = useRef<LottieRefCurrentProps>(null)
 
@@ -37,7 +38,12 @@ const CompanionComponent = ({ companionId, subject, topic, name, userName, userI
 
     const onCallEnd = () => setCallStatus(CallStatus.FINISHED);
 
-    const onMessage = () => { }
+    const onMessage = (message:Message) => {
+      if(message.type === 'transcript' && message.transcriptType === 'final'){
+        const newMessage = { role:message.role,content:message.transcript}
+        setMessages((prev) =>[newMessage, ...prev])
+      }
+    }
 
     const onSpeechStart = () => setIsSpeaking(true)
     const onSpeechEnd = () => setIsSpeaking(false)
@@ -107,7 +113,7 @@ const CompanionComponent = ({ companionId, subject, topic, name, userName, userI
               {userName}
             </p>
           </div>
-          <button className="btn-mic" onClick={toggleMicrophone}>
+          <button className="btn-mic" onClick={toggleMicrophone} disabled={callStatus !== CallStatus.ACTIVE}>
             <Image src={isMuted ? '/icons/mic-off.svg' : '/icons/mic-on.svg'} alt='mic' height={36} width={36} />
             <p className='max-sm:hidden'>
               {isMuted ? "Turn on Microphone" : "Turn off Microphone"}
@@ -120,7 +126,23 @@ const CompanionComponent = ({ companionId, subject, topic, name, userName, userI
       </section>
       <section className="transcript">
         <div className="transcript-message now-scrollbar">
-          Message
+          {messages.map((message,index)=>{
+            if(message.role==="assistant"){
+              return (
+                <p key={index} className="max-sm:text-sm">
+                  {
+                    name
+                    .split('')[0]
+                    .replace('/[.,]/g',"")
+                  }:{message.content}
+                </p>
+              )
+            }else{
+              <p key={index} className='text-primary max-sm:text-sm'>
+                {userName}: {message.content}
+              </p>
+            }
+          })}
         </div>
         <div className="transcript-fade"></div>
       </section>
