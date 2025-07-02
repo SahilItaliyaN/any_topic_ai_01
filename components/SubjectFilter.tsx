@@ -18,7 +18,7 @@ const SubjectFilter = () => {
     useEffect(()=>{
       let newurl = "";
       if(subject == "all"){
-        const newUrl = removeKeysFromUrlQuery({
+          newurl = removeKeysFromUrlQuery({
           params: searchParams.toString(),
           keysToRemove: ["subject"],
         });

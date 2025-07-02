@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from './ui/table'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table'
 import { cn, getSubjectColor } from '@/lib/utils';
 import Link from 'next/link';
 import Image from 'next/image';
