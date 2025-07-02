@@ -7,7 +7,7 @@ import React from 'react'
 
 const Page =  async() => {
   const companions = await getAllCompanion({limit:3})
-  const recentSessionsCompanion = await getRecentsSession({limit:10})
+  const recentSessionsCompanion = await getRecentsSession(10)
   return (
     <main>
       <h1 className='text-2xl underline'>Popular Companions</h1>

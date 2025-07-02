@@ -88,7 +88,7 @@ export const getRecentsSession = async (limit:10) =>{
 }
 
 
-export const getUserSession = async (userId:string,limit:10) =>{
+export const getUserSession = async (userId:string,limit:number = 10) =>{
   const supabase = createSupabaseClient();
   const {data , error } = await supabase
     .from("session_history")
@@ -116,4 +116,30 @@ export const getUserCompanion = async (userId:string) =>{
   }
 
   return data;
+}
+
+export const newCompanionPermissions = async() =>{
+  const { userId , has } = await auth();
+  const supabase = createSupabaseClient();
+
+  let limit = 0;
+  if(has({plan:"pro"})){
+    return true;
+  }else if(has({feature:"3_companion_limit"})){
+    limit=3;
+  }else if(has({feature:"10_companion_limit"})){
+    limit=10;
+  }
+
+  const { data , error } = await supabase.from('companion').select("id",{count:"exact"}).eq("author",userId)
+
+  if(error) throw new Error(error.message)
+
+  const companionCount = data?.length;
+
+  if(companionCount >= limit){
+    return false;
+  }else{
+    return true;
+  }
 }
