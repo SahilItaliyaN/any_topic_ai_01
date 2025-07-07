@@ -50,7 +50,7 @@ const Profile = async () => {
                 {sessionHistory.length}
               </p>
             </div>
-            <div className="">Lessons Completed</div>
+            <div>Lessons Completed</div>
           </div>
         </div>
       </section>

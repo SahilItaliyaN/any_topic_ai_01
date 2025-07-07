@@ -3,7 +3,6 @@ import SearchInput from '@/components/SearchInput';
 import SubjectFilter from '@/components/SubjectFilter';
 import { getAllCompanion } from '@/lib/actions/companion.action';
 import { getSubjectColor } from '@/lib/utils';
-import React from 'react'
 
 const CompanionLibrary = async({searchParams}:SearchParams) => {
 
